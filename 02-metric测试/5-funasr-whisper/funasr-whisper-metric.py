@@ -9,10 +9,10 @@ import librosa
 import soundfile as sf
 
 # ========== 配置项（和其他模型保持一致，保证对比公平） ==========
-JSONL_PATH = "../sichuan_eval.jsonl"  # 你的评测JSONL文件路径
+JSONL_PATH = "../sichuan_eval_cleaned.jsonl"  # 你的评测JSONL文件路径
 AUDIO_ROOT = "../sichuan/wav"  # 音频根目录
-DEVICE = "cpu"  # 有GPU改为"cuda"（速度提升10倍+）
-MAX_SAMPLES = 100  # 仅评测前1000条有效样本
+DEVICE = "cuda:0"  # 有GPU改为"cuda"（速度提升10倍+）
+# MAX_SAMPLES = 1000  # 仅评测前1000条有效样本
 
 # 你的Whisper解码参数配置
 DECODING_OPTIONS = {
@@ -145,11 +145,11 @@ def main():
     print(f"⚠️ 无效音频样本（路径不存在）：{len(invalid_samples)} 条，已跳过")
 
   # 截取前1000条有效样本
-  if len(valid_samples) > MAX_SAMPLES:
-    valid_samples = valid_samples[:MAX_SAMPLES]
-    print(f"\n🔍 已截取前 {MAX_SAMPLES} 条有效样本进行评测")
-  else:
-    print(f"\n🔍 有效样本数不足{MAX_SAMPLES}条，将评测全部{len(valid_samples)}条")
+  # if len(valid_samples) > MAX_SAMPLES:
+  #   valid_samples = valid_samples[:MAX_SAMPLES]
+  #   print(f"\n🔍 已截取前 {MAX_SAMPLES} 条有效样本进行评测")
+  # else:
+  #   print(f"\n🔍 有效样本数不足{MAX_SAMPLES}条，将评测全部{len(valid_samples)}条")
 
   # 2. 加载Whisper-large-v3-turbo模型（完全按你的配置）
   print(f"\n🔄 加载Whisper-large-v3-turbo模型（{DEVICE}）...")
@@ -228,7 +228,7 @@ def main():
   report = {
     "model": "Whisper-large-v3-turbo (FunASR)",
     "device": DEVICE,
-    "max_samples_limit": MAX_SAMPLES,
+    # "max_samples_limit": MAX_SAMPLES,
     "actual_sample_count": len(all_results),
     "decoding_options": DECODING_OPTIONS,  # 记录解码参数
     "overall_metrics": {
@@ -247,9 +247,9 @@ def main():
   txt_report_path = "./whisper_large_v3_turbo_sichuan_eval_report_1000samples.txt"
   with open(txt_report_path, "w", encoding="utf-8") as f:
     f.write("=" * 60 + "\n")
-    f.write(f"Whisper-large-v3-turbo 四川方言评测报告（前{MAX_SAMPLES}条）\n")
+    f.write(f"Whisper-large-v3-turbo 四川方言评测报告\n")
     f.write("=" * 60 + "\n")
-    f.write(f"评测样本数：{len(all_results)} 条（限制最多{MAX_SAMPLES}条）\n")
+    f.write(f"评测样本数：{len(all_results)} 条\n")
     f.write(f"运行设备：{DEVICE}\n")
     f.write(f"解码配置：强制中文（避免转英语）\n")
     f.write("\n【核心指标】\n")
@@ -266,7 +266,7 @@ def main():
 
   # 5. 打印最终结果
   print("\n" + "=" * 60)
-  print(f"✅ Whisper-large-v3-turbo 评测完成（前{MAX_SAMPLES}条）！")
+  print(f"✅ Whisper-large-v3-turbo 评测完成）！")
   print(f"📊 核心指标：")
   print(f"   平均CER：{avg_cer}（越小越好）")
   print(f"   平均WER：{avg_wer}（越小越好）")
