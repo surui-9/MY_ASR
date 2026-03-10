@@ -1,0 +1,11 @@
+CHANNEL	SPEAKER_ID	GENDER	AGE	REGION,CITY	DEVICE
+C0	G0001	F	20	Sichuan	Mobile phone
+C0	G0003	F	30	Sichuan	Mobile phone
+C0	G0007	F	24	Sichuan	Mobile phone
+C0	G0008	F	21	Sichuan	Mobile phone
+C0	G0051	F	24	Sichuan	Mobile phone
+C0	G1100	M	21	Sichuan	Mobile phone
+C0	G1103	M	19	Sichuan	Mobile phone
+C0	G1105	M	17	Chongqing	Mobile phone
+C0	G1106	M	17	Sichuan	Mobile phone
+C0	G1108	M	17	Chongqing	Mobile phone
